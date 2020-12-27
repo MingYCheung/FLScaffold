@@ -1,0 +1,48 @@
+name: flutter_scaffold
+description: 由MingYCheung's整合并添加部分代码制作的脚手架框架
+repository: https://gitee.com/MingYCheung/FLScaffold
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.0
+  # 网络请求
+  dio: ^3.0.10
+  # 本地化存储
+  shared_preferences: ^0.5.12+4
+  # 获取手机信息
+  device_info: ^0.4.0+2
+  # 图片手势放大缩小
+  photo_view: ^0.5.0
+  # 动态权限申请
+  permission_handler: ^5.0.1+1
+  # 文件路径管理
+  path_provider: ^1.6.18
+  # 常见工具
+  common_utils: ^1.1.1
+  # 数据库
+  sqflite: ^1.3.0
+  # 解/压缩
+  archive: ^2.0.10
+  # 图标
+  font_awesome_flutter: ^8.4.0
+  # 路由管理
+  fluro: ^1.7.8
+  # rxDart
+  rxdart: ^0.25.0
+  # url
+  url_launcher: ^5.7.10
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
