@@ -73,7 +73,7 @@ class PermissionPageState extends State<PermissionPage> {
                       new PermissionStatusCallback(
                           // 授权
                           onGranted: () {
-                        Toast.show("用户已授予 ", context,
+                        Toast.show("用户已授予", context,
                             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                       },
                           // 拒绝
@@ -113,8 +113,8 @@ class PermissionPageState extends State<PermissionPage> {
                       new PermissionsStatusesCallback(permissionsStatuses:
                           (List<Permission> granted, List<Permission> denied,
                               Map<Permission, PermissionStatus> map) {
-                    if (granted.isNotEmpty) {
-                      Toast.show("用户拒绝了全部", context);
+                    if (denied.isEmpty) {
+                      Toast.show("用户授予了全部", context);
                     }else if (granted.isEmpty) {
                       Toast.show("用户拒绝了全部", context);
                     }else {
