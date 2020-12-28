@@ -49,50 +49,154 @@ class PermissionUtil {
       @required PermissionStatusCallback callback) async {
     // 请求单个权限
     PermissionStatus status = await permission.request();
+    // 符合的
+    List<Permission> coincident = new List();
+    // 最初的
+    Map<Permission, PermissionStatus> initial = new Map();
     // 类型开关
     switch (status) {
-      // 未申请
+    // 未申请
       case PermissionStatus.undetermined:
-        callback.onUndetermined();
+        coincident.add(permission);
+        initial[permission] = status;
+        callback.onUndetermined(coincident, initial);
         break;
-      // 用户授予
+    // 用户授予
       case PermissionStatus.granted:
-        callback.onGranted();
+        coincident.add(permission);
+        initial[permission] = status;
+        callback.onGranted(coincident, initial);
         break;
-      // 用户拒绝
+    // 用户拒绝
       case PermissionStatus.denied:
-        callback.onDenied();
+        coincident.add(permission);
+        initial[permission] = status;
+        callback.onDenied(coincident, initial);
         break;
-      // 用户永不同意 仅android
+    // 用户永不同意 仅android
       case PermissionStatus.permanentlyDenied:
-        callback.onPermanentlyDenied();
+        coincident.add(permission);
+        initial[permission] = status;
+        callback.onPermanentlyDenied(coincident, initial);
         break;
-      // 受系统限制 仅ios
+    // 受系统限制 仅ios
       case PermissionStatus.restricted:
-        callback.onRestricted();
+        coincident.add(permission);
+        initial[permission] = status;
+        callback.onRestricted(coincident, initial);
         break;
     }
   }
 
   static void requestPermissionsStatuses(List<Permission> permissions,
-      @required PermissionsStatusesCallback callback) async {
-    // 授权了的权限
-    List<Permission> granted = new List();
-    // 拒绝了的权限
-    List<Permission> denied = new List();
-
+      @required PermissionStatusCallback callback) async {
+    // 已处理
+    int processed = 0;
+    // 未处理
+    int untreated = permissions.length;
+    // 符合的
+    List<Permission> coincident = new List();
     // 请求多个权限
     Map<Permission, PermissionStatus> statuses = await permissions.request();
     // 提出权限
-    statuses.forEach((p, ps) {
-      if (ps == PermissionStatus.granted && permissions.contains(p)) {
-        granted.add(p);
-      }
-      if (ps == PermissionStatus.denied && permissions.contains(p)) {
-        denied.add(p);
+    statuses.forEach((p, s) {
+      switch (s) {
+      // 未申请
+        case PermissionStatus.undetermined:
+          // 已处理记录
+          processed++;
+          // 未处理记录
+          untreated--;
+          // 添加对应
+          coincident.clear();
+          coincident.add((permissions.contains(p)) ? p : null);
+          // 多>>单
+          // 如果已处理与申请的权限数量相同 则已经全部处理
+          if (processed == statuses.keys.length) {
+            callback.onUndetermined(coincident, statuses);
+          } else
+            // 如果已处理、未处理之和与权限数量相同 则已经全部处理
+          if ((processed + untreated) == statuses.keys.length) {
+            callback.onUndetermined(coincident, statuses);
+          }
+          break;
+      // 用户授予
+        case PermissionStatus.granted:
+          // 已处理记录
+          processed++;
+          // 未处理记录
+          untreated--;
+          // 添加对应
+          coincident.clear();
+          coincident.add(permissions.contains(p) ? p : null);
+          // 多>>单
+          // 如果已处理与申请的权限数量相同 则已经全部处理
+          if (processed == statuses.keys.length) {
+            callback.onGranted(coincident, statuses);
+          } else
+            // 如果已处理、未处理之和与权限数量相同 则已经全部处理
+          if ((processed + untreated) == statuses.keys.length) {
+            callback.onGranted(coincident, statuses);
+          }
+          break;
+      // 用户拒绝
+        case PermissionStatus.denied:
+          // 已处理记录
+          processed++;
+          // 未处理记录
+          untreated--;
+          // 添加对应
+          coincident.clear();
+          coincident.add(permissions.contains(p) ? p : null);
+          // 多>>单
+          // 如果已处理与申请的权限数量相同 则已经全部处理
+          if (processed == statuses.keys.length) {
+            callback.onDenied(coincident, statuses);
+          } else
+            // 如果已处理、未处理之和与权限数量相同 则已经全部处理
+          if ((processed + untreated) == statuses.keys.length) {
+            callback.onDenied(coincident, statuses);
+          }
+          break;
+      // 用户永不同意 仅android
+        case PermissionStatus.permanentlyDenied:
+          // 已处理记录
+          processed++;
+          // 未处理记录
+          untreated--;
+          // 添加对应
+          coincident.clear();
+          coincident.add(permissions.contains(p) ? p : null);
+          // 多>>单
+          // 如果已处理与申请的权限数量相同 则已经全部处理
+          if (processed == statuses.keys.length) {
+            callback.onPermanentlyDenied(coincident, statuses);
+          } else
+            // 如果已处理、未处理之和与权限数量相同 则已经全部处理
+          if ((processed + untreated) == statuses.keys.length) {
+            callback.onPermanentlyDenied(coincident, statuses);
+          }
+          break;
+      // 受系统限制 仅ios
+        case PermissionStatus.restricted:
+          // 已处理记录
+          processed++;
+          // 未处理记录
+          untreated--;
+          // 添加对应
+          coincident.clear();
+          coincident.add(permissions.contains(p) ? p : null);
+          // 多>>单
+          // 如果已处理与申请的权限数量相同 则已经全部处理
+          if (processed == statuses.keys.length) {
+            callback.onRestricted(coincident, statuses);
+          } else
+            // 如果已处理、未处理之和与权限数量相同 则已经全部处理
+          if ((processed + untreated) == statuses.keys.length) {
+            callback.onRestricted(coincident, statuses);
+          }
+          break;
       }
     });
-    // 遍历结束
-    callback.permissionsStatuses(granted, denied, statuses);
   }
 }

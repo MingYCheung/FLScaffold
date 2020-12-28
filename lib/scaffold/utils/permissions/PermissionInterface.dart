@@ -17,45 +17,61 @@ import 'package:permission_handler/permission_handler.dart';
 ///
 /// @Description:
 
-// 未申请
-typedef OnUndetermined = void Function();
-// 用户授予
-typedef OnGranted = void Function();
-// 用户拒绝
-typedef OnDenied = void Function();
-// 用户永不同意 仅android
-typedef OnPermanentlyDenied = void Function();
-// 受系统限制 仅ios
-typedef OnRestricted = void Function();
+/// 未申请
+///
+/// * [coincident] 符合条件的权限的list
+/// * [initial] 最初的权限对象
+typedef OnUndetermined = void Function(
+    List<Permission> coincident, Map<Permission, PermissionStatus> initial);
+
+/// 用户授予
+///
+/// * [coincident] 符合条件的权限的list
+/// * [initial] 最初的权限对象
+typedef OnGranted = void Function(
+    List<Permission> coincident, Map<Permission, PermissionStatus> initial);
+
+/// 用户拒绝
+///
+/// * [coincident] 符合条件的权限的list
+/// * [initial] 最初的权限对象
+typedef OnDenied = void Function(
+    List<Permission> coincident, Map<Permission, PermissionStatus> initial);
+
+/// 用户永不同意 仅android
+///
+/// * [coincident] 符合条件的权限的list
+/// * [initial] 最初的权限对象
+typedef OnPermanentlyDenied = void Function(
+    List<Permission> coincident, Map<Permission, PermissionStatus> initial);
+
+/// 受系统限制 仅ios
+///
+/// * [coincident] 符合条件的权限的list
+/// * [initial] 最初的权限对象
+typedef OnRestricted = void Function(
+    List<Permission> coincident, Map<Permission, PermissionStatus> initial);
 
 class PermissionStatusCallback {
   // 未申请
   OnUndetermined onUndetermined;
+
   // 用户授予
   OnGranted onGranted;
+
   // 用户拒绝
   OnDenied onDenied;
+
   // 用户永不同意 仅android
   OnPermanentlyDenied onPermanentlyDenied;
+
   // 受系统限制 仅ios
   OnRestricted onRestricted;
 
   PermissionStatusCallback(
       {OnUndetermined this.onUndetermined,
-        @required OnGranted this.onGranted,
-        @required OnDenied this.onDenied,
-        @required OnPermanentlyDenied this.onPermanentlyDenied,
-        @required OnRestricted this.onRestricted});
-}
-
-typedef PermissionsStatuses = void Function(
-    List<Permission> granted,
-    List<Permission> denied,
-    Map<Permission, PermissionStatus> map);
-
-class PermissionsStatusesCallback {
-  PermissionsStatuses permissionsStatuses;
-
-  PermissionsStatusesCallback(
-      {@required PermissionsStatuses this.permissionsStatuses});
+      @required OnGranted this.onGranted,
+      @required OnDenied this.onDenied,
+      @required OnPermanentlyDenied this.onPermanentlyDenied,
+      @required OnRestricted this.onRestricted});
 }

@@ -71,27 +71,30 @@ class PermissionPageState extends State<PermissionPage> {
                   PermissionUtil.requestPermissionStatus(
                       Permission.storage,
                       new PermissionStatusCallback(
-                          // 授权
-                          onGranted: () {
-                        Toast.show("用户已授予", context,
-                            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                          // 授予
+                          onGranted: (List<Permission> coincident,
+                              Map<Permission, PermissionStatus> initial) {
+                        Toast.show("用户授予${coincident.toString()}", context);
+                        Logs.v("授予${coincident.toString()}", tag: _tag);
                       },
                           // 拒绝
-                          onDenied: () {
-                        Toast.show("用户拒绝", context,
-                            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                          onDenied: (List<Permission> coincident,
+                              Map<Permission, PermissionStatus> initial) {
+                        Toast.show("用户拒绝${coincident.toString()}", context);
+                        Logs.v("拒绝${coincident.toString()}", tag: _tag);
                       },
                           // 永拒 android
-                          onPermanentlyDenied: () async {
-                        Toast.show("用户永不同意 2秒后拉起App设置页面", context,
-                            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                        await Future.delayed(Duration(seconds: 2));
-                        openAppSettings();
+                          onPermanentlyDenied: (List<Permission> coincident,
+                              Map<Permission, PermissionStatus> initial) {
+                            Toast.show("用户选择了拒绝不再提醒${coincident.toString()}, 2秒后打开设置页面", context);
+                            openAppSettings();
+                            Logs.v("永拒${coincident.toString()}", tag: _tag);
                       },
-                          // 受限制 ios
-                          onRestricted: () {
-                        Toast.show("受系统限制", context,
-                            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                          // 受限 ios
+                          onRestricted: (List<Permission> coincident,
+                              Map<Permission, PermissionStatus> initial) {
+                        Toast.show("${coincident.toString()}权限受到系统限制, 无法获取", context);
+                        Logs.v("${coincident.toString()}受限", tag: _tag);
                       }));
                 }),
               ]),
@@ -110,18 +113,31 @@ class PermissionPageState extends State<PermissionPage> {
                   // 申请权限
                   PermissionUtil.requestPermissionsStatuses(
                       [Permission.location, Permission.calendar],
-                      new PermissionsStatusesCallback(permissionsStatuses:
-                          (List<Permission> granted, List<Permission> denied,
-                              Map<Permission, PermissionStatus> map) {
-                    if (denied.isEmpty) {
-                      Toast.show("用户授予了全部", context);
-                    }else if (granted.isEmpty) {
-                      Toast.show("用户拒绝了全部", context);
-                    }else {
-                      Toast.show("用户只授予了${granted.toString()}, 还有${denied.toString()}没有授权", context);
-                      Logs.v("用户只授予了${(granted.toString())}, 还有${denied.toString()}没有授权", tag: _tag);
-                    }
-                  }));
+                      new PermissionStatusCallback(
+                          // 授予
+                          onGranted: (List<Permission> coincident,
+                              Map<Permission, PermissionStatus> initial) {
+                        Toast.show("用户授予${coincident.toString()}", context);
+                        Logs.v("授予${coincident.toString()}, ${initial.toString()}", tag: _tag);
+                      },
+                          // 拒绝
+                          onDenied: (List<Permission> coincident,
+                              Map<Permission, PermissionStatus> initial) {
+                        Toast.show("用户拒绝${coincident.toString()}", context);
+                        Logs.v("拒绝${coincident.toString()}, ${initial.toString()}", tag: _tag);
+                      },
+                          // 永拒 android
+                          onPermanentlyDenied: (List<Permission> coincident,
+                              Map<Permission, PermissionStatus> initial) async {
+                        Toast.show("用户选择了拒绝不再提醒${coincident.toString()}", context);
+                        Logs.v("永拒${coincident.toString()}, ${initial.toString()}", tag: _tag);
+                      },
+                          // 受限 ios
+                          onRestricted: (List<Permission> coincident,
+                              Map<Permission, PermissionStatus> initial) {
+                        Toast.show("${coincident.toString()}权限受到系统限制, 无法获取", context);
+                        Logs.v("${coincident.toString()} 受限", tag: _tag);
+                      }));
                 }),
               ]),
         ],

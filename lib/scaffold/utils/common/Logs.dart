@@ -83,17 +83,17 @@ class Logs {
       return;
     }
     print(
-        "$label$tag ╭───────────────────────────────────────────────────────────── START ──────────────────────────────────────────────────────────────╮ ");
+        "$label$tag ===START===>>");
     while (message.isNotEmpty) {
       if (message.length > _maxLen) {
-        print("$label$tag ┆ ${message.substring(0, _maxLen)} ┆");
+        print("$label$tag ${message.substring(0, _maxLen)}");
         message = message.substring(_maxLen, message.length);
       } else {
-        print("$label$tag ┆ $message.");
+        print("$label$tag $message.");
         message = "";
       }
     }
     print(
-        "$label$tag ╰───────────────────────────────────────────────────────────── END ────────────────────────────────────────────────────────────────╯  ");
+        "$label$tag ===END===>>");
   }
 }

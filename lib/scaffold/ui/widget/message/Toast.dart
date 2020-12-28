@@ -77,7 +77,8 @@ class ToastView {
     if (_overlayEntry == null) {
       _overlayEntry = new OverlayEntry(
         builder: (BuildContext context) => ToastWidget(
-            widget: ToastWidget.baseWidget(msg, context, widget, backgroundRadius, color, textColor, _isShow),
+            widget: ToastWidget.baseWidget(msg, context, widget,
+                backgroundRadius, color, textColor, _isShow),
             gravity: gravity),
       );
       _isShow = true;
