@@ -1,20 +1,20 @@
 # FLScaffold
 
-#### 介绍
-由MingYCheung开发的flutter应用脚手架
+#### Description
+The Scaffolding for Flutter, developed by MingYCheung.
 
-#### 如何使用
+#### HowToUse
 ```yml
 dependencies:
   flutter_scaffold:
     git:
-      url: git@gitee.com:MingYCheung/FLScaffold.git
+      url: git@github.com:MingYCheung/FLScaffold.git
 ```
 
-#### 开发文档
-{&官网链接&}
+#### Develop document
+{&develop_document&}
 
-#### 免责声明
- 本人不会通过该项目进行盈利，该项目中大部分为主流插件的二次封装
+#### Disclaimer
+I will not make profits through this project, most of which are the secondary packaging of mainstream plug-ins
 
-***侵删***
+***infringement to delete***
