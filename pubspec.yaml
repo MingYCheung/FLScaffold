@@ -1,5 +1,5 @@
 name: flutter_scaffold
-description: 由MingYCheung's整合并添加部分代码制作的脚手架框架
+description: The Scaffolding for Flutter, developed by MingYCheung.
 repository: https://gitee.com/MingYCheung/FLScaffold
 
 publish_to: 'none'
