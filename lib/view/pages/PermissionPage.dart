@@ -100,7 +100,7 @@ class PermissionPageState extends State<PermissionPage> {
               ]),
           // 多个权限申请卡片
           Cards.demoPageCard(
-              "向用户申请多个权限[位置，日历]权限，\n直接弹出系统底部弹窗\n(建议android最后点击同意和永久拒绝，\n以便查看各状态回调弹出的Toast提示)",
+              "向用户申请多个权限[位置, 日历, 相机]权限，\n直接弹出系统底部弹窗\n(建议android最后点击同意和永久拒绝，\n以便查看各状态回调弹出的Toast提示)",
               children: [
                 Buttons.roundTextButton("文档主页", btnColor: MoreColors.tomato,
                     clickCallback: () {
@@ -108,11 +108,11 @@ class PermissionPageState extends State<PermissionPage> {
                   Url.openWebUrl("https://gitee.com/MingYCheung/FLScaffold");
                 }),
                 SizedBox(width: 8),
-                Buttons.roundTextButton("效果演示", clickCallback: () async {
+                Buttons.roundTextButton("效果演示", clickCallback: () {
                   Logs.i("效果演示", tag: _tag);
                   // 申请权限
                   PermissionUtil.requestPermissionsStatuses(
-                      [Permission.location, Permission.calendar],
+                      [Permission.location, Permission.calendar, Permission.camera],
                       new PermissionStatusCallback(
                           // 授予
                           onGranted: (List<Permission> coincident,
@@ -128,7 +128,7 @@ class PermissionPageState extends State<PermissionPage> {
                       },
                           // 永拒 android
                           onPermanentlyDenied: (List<Permission> coincident,
-                              Map<Permission, PermissionStatus> initial) async {
+                              Map<Permission, PermissionStatus> initial) {
                         Toast.show("用户选择了拒绝不再提醒${coincident.toString()}", context);
                         Logs.v("永拒${coincident.toString()}, ${initial.toString()}", tag: _tag);
                       },
