@@ -18,20 +18,14 @@ class ComponentsPage extends StatefulWidget {
   State<StatefulWidget> createState() => ComponentsPageState();
 }
 
-String _tag = 'ComponentsPage: ';
-
 class ComponentsPageState extends State<ComponentsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MoreColors.whiteSmoke,
+      backgroundColor: MoreColors.smoke,
       appBar: AppBar(
-        backgroundColor: MoreColors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_rounded, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        elevation: 0.0,
+        backgroundColor: MoreColors.smoke,
+        elevation: 0.8,
         centerTitle: true,
         title:
         Text('ComponentsPage', style: TextStyle(color: MoreColors.black)),

@@ -93,15 +93,12 @@ class Cards {
     );
   }
 
-  /// 创建卡片
-  static Card demoPageCard(
-    String content, {
-    List<Widget> children,
-    Color cardBackgroundColor = MoreColors.lightsLateGray,
-    double cardElevation = 16.0,
-    double cardRadius = 16.0,
-    Key key
-  }) {
+  static Card demoPageCard(String content,
+      {List<Widget> children,
+      Color cardBackgroundColor = MoreColors.lightsLateGray,
+      double cardElevation = 16.0,
+      double cardRadius = 16.0,
+      Key key}) {
     return new Card(
       key: key,
       color: cardBackgroundColor,
@@ -130,6 +127,26 @@ class Cards {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  static Card databasePageCard(
+      {Widget child,
+      Color cardBackgroundColor = MoreColors.lightsLateGray,
+      double cardElevation = 16.0,
+      double cardRadius = 16.0,
+      Key key}) {
+    return new Card(
+      key: key,
+      color: cardBackgroundColor,
+      elevation: cardElevation,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(cardRadius))),
+      clipBehavior: Clip.antiAlias,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Center(child: child),
       ),
     );
   }

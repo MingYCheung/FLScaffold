@@ -25,14 +25,15 @@ class DemosPageState extends State<DemosPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: MoreColors.whiteSmoke,
+        backgroundColor: MoreColors.smoke,
         appBar: AppBar(
-          backgroundColor: MoreColors.white,
-          elevation: 0.0,
+          backgroundColor: MoreColors.smoke,
+          elevation: 0.8,
           centerTitle: true,
           title: Text("Demos", style: TextStyle(color: MoreColors.black)),
         ),
         body: GridView(
+          physics: BouncingScrollPhysics(),
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 260.0,
             childAspectRatio: 0.68,

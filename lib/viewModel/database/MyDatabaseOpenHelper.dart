@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_scaffold/model/database/User.dart';
 import 'package:flutter_scaffold/scaffold/base/database/DatabaseOpenHelper.dart';
+import 'package:flutter_scaffold/scaffold/utils/common/Logs.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
 /// @ClassName: MyDatabaseOpenHelper
@@ -16,19 +17,19 @@ import 'package:sqflite_common/sqlite_api.dart';
 /// @Description:
 
 class MyDatabaseOpenHelper extends DatabaseOpenHelper {
-  static int _version;
-  static String _name;
-  static Database _database;
+  static final _tag = "MyDatabaseOpenHelper:";
+  static int _dbVersion = 1;
+  static String _dbName = "myDatabase";
+  static Database _db;
 
   /// 构造方法
-  MyDatabaseOpenHelper(
-      Database database, String databaseName, int databaseVersion)
-      : super(_database, _name, _version);
+  MyDatabaseOpenHelper() : super(_db, _dbName, _dbVersion);
 
   /// 初始化数据库操作
   /// 创建表
   @override
-  void onCreate(Database db) async {
+  void onCreate(Database db, int version) async {
+    Logs.v("onCreate", tag: _tag);
     // 建表
     await db.execute(
         "create table ${User.TABLENAME} ( ${User.ID}, ${User.NAME}, ${User.AGE}, ${User.SEX} )");
@@ -37,7 +38,7 @@ class MyDatabaseOpenHelper extends DatabaseOpenHelper {
   /// 升级数据库操作
   @override
   void onUpgrade(Database db, int oldVersion, int newVersion) async {
-    // TODO: implement onUpgrade
+    Logs.v("onUpgrade", tag: _tag);
   }
 
   /// 获取数据库名称
@@ -46,6 +47,5 @@ class MyDatabaseOpenHelper extends DatabaseOpenHelper {
 
   /// 获取当前数据库版本
   @override
-  // TODO: implement databaseVersion
   int get databaseVersion => super.databaseVersion;
 }

@@ -15,8 +15,7 @@ import 'package:flutter_scaffold/scaffold/ui/MoreColors.dart';
 ///
 /// @Description:
 
-class UserProvider extends DatabaseProvider{
-  
+class UserProvider extends DatabaseProvider {
   /// 构造方法
   /// 传入User
   UserProvider(Object model) : super(User);
@@ -24,6 +23,4 @@ class UserProvider extends DatabaseProvider{
   @override
   // TODO: implement model
   Object get model => super.model;
-
-
 }

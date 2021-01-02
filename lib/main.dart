@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_scaffold/model/application/MyApplication.dart';
 import 'package:flutter_scaffold/scaffold/ui/MoreColors.dart';
 import 'package:flutter_scaffold/scaffold/utils/common/ScreenUtil.dart';
 import 'package:flutter_scaffold/view/pages/DemosPage.dart';
@@ -24,6 +25,8 @@ void main() {
   runApp(MyApp());
   // 设置沉浸式状态栏
   ScreenUtil.setBarStatus(true);
+  // 初始化MyApplication
+  MyApplication.init();
 }
 
 class MyApp extends StatelessWidget {
@@ -52,6 +55,13 @@ class _MyHomePageState extends State<MyHomePage> {
   // 导航栏选中位置
   int _selectedIndex;
 
+  // pageView控制器
+  var _pageViewController = new PageController(
+    initialPage: 0,
+    viewportFraction: 1,
+    keepPage: true,
+  );
+
   @override
   void initState() {
     super.initState();
@@ -59,24 +69,20 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   buildBody(int index) {
-    switch (index) {
-
-      /// DemoPage
-      case 0:
-        return DemosPage();
-
-      /// ComponentsPage
-      case 1:
-        return ComponentsPage();
-
-      /// ExperimentPage
-      case 2:
-        return ExperimentPage();
-
-      /// AboutPage
-      case 3:
-        return AboutPage();
-    }
+    return PageView(
+        controller: _pageViewController,
+        physics: BouncingScrollPhysics(),
+        children: [
+          DemosPage(),
+          ComponentsPage(),
+          ExperimentPage(),
+          AboutPage(),
+        ],
+        onPageChanged: (index) {
+          setState(() {
+            _selectedIndex = _selectedIndex != index ? index : _selectedIndex;
+          });
+        });
   }
 
   @override
@@ -91,6 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: (int index) {
           setState(() {
             _selectedIndex = index;
+            _pageViewController.jumpToPage(index);
           });
         },
         currentIndex: _selectedIndex,

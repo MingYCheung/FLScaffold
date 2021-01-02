@@ -155,6 +155,6 @@ class MoreColors {
   static const Color burlyWood = Color(0xffdeb887); // 实木色
   static const Color crimson = Color(0xffdc143c); // 暗深红色
   static const Color plum = Color(0xffdda0dd); // 洋李色
-  static const Color smoke = Color(0xffdcdcdc); // 淡灰色
+  static const Color smoke = Color(0xfffafafa); // 烟灰
   static const Color transparent = Color(0x00000000); // 透明
 }
