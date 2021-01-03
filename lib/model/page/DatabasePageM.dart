@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_scaffold/scaffold/ui/MoreColors.dart';
+import 'package:path_provider/path_provider.dart';
 
-/// @ClassName: DatabaseProvider
+/// @ClassName: DatabasePageM
 ///
 /// @Author MingYCheung
 ///
@@ -9,16 +12,10 @@ import 'package:flutter_scaffold/scaffold/ui/MoreColors.dart';
 ///
 /// @Email: mingycheung@tom.com
 ///
-/// @Creation: 2020/12/20 15:30
+/// @Creation: 2021/1/3 22:26
 ///
 /// @Description:
-abstract class DatabaseProvider {
-  static Object _model;
 
-  DatabaseProvider(Object model) {
-    _model = model;
-  }
-
-  Object get model => _model;
-
+class DatabasePageM {
+  static final _tag = "DatabasePageM:";
 }

@@ -1,14 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_scaffold/model/database/User.dart';
 import 'package:flutter_scaffold/scaffold/base/database/DatabaseOpenHelper.dart';
 import 'package:flutter_scaffold/scaffold/utils/common/Logs.dart';
+import 'package:flutter_scaffold/scaffold/utils/database/DatabaseUtil.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
 /// @ClassName: MyDatabaseOpenHelper
 ///
 /// @Author MingYCheung
 ///
-/// @Website: https://mingycheung.tech
+/// @Website: https://www.mingycheung.tech
 ///
 /// @Email: mingycheung@tom.com
 ///
@@ -18,27 +21,35 @@ import 'package:sqflite_common/sqlite_api.dart';
 
 class MyDatabaseOpenHelper extends DatabaseOpenHelper {
   static final _tag = "MyDatabaseOpenHelper:";
-  static int _dbVersion = 1;
-  static String _dbName = "myDatabase";
-  static Database _db;
+  static int dbVersion = 1;
+  static String dbName = "myDatabase";
+  static Database database;
 
-  /// 构造方法
-  MyDatabaseOpenHelper() : super(_db, _dbName, _dbVersion);
+  /// 构造函数
+  MyDatabaseOpenHelper({Database db, String name, int version})
+      : super(database, dbName, dbVersion);
 
-  /// 初始化数据库操作
-  /// 创建表
+  /// 创建
   @override
-  void onCreate(Database db, int version) async {
+  Future<void> onCreate(Database db, int version) async {
     Logs.v("onCreate", tag: _tag);
-    // 建表
-    await db.execute(
-        "create table ${User.TABLENAME} ( ${User.ID}, ${User.NAME}, ${User.AGE}, ${User.SEX} )");
+    // 创建
+    db.execute(User().tableSql);
+    Logs.v("UserSql: ${User().tableSql}", tag: _tag);
   }
 
-  /// 升级数据库操作
+  /// 降级
   @override
-  void onUpgrade(Database db, int oldVersion, int newVersion) async {
+  Future<void> onDowngrade(Database db, int oldVersion, int newVersion) async {
+    Logs.v("onDowngrade", tag: _tag);
+    // 降级
+  }
+
+  /// 升级
+  @override
+  Future<void> onUpgrade(Database db, int oldVersion, int newVersion) async {
     Logs.v("onUpgrade", tag: _tag);
+    // 升级
   }
 
   /// 获取数据库名称
@@ -49,5 +60,3 @@ class MyDatabaseOpenHelper extends DatabaseOpenHelper {
   @override
   int get databaseVersion => super.databaseVersion;
 }
-
-

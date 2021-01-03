@@ -23,15 +23,13 @@ import 'package:flutter_scaffold/view/pages/AboutPage.dart';
 
 void main() {
   runApp(MyApp());
-  // 设置沉浸式状态栏
-  ScreenUtil.setBarStatus(true);
-  // 初始化MyApplication
-  MyApplication.init();
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // 初始化MyApplication
+    MyApplication(context).init();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "FLScaffold Demo",

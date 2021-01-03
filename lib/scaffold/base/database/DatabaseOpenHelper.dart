@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_scaffold/scaffold/utils/common/Logs.dart';
 import 'package:flutter_scaffold/viewModel/database/MyDatabaseOpenHelper.dart';
+import 'package:flutter_scaffold/viewModel/pages/DatabasePageVM.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -19,74 +22,78 @@ import 'package:sqflite/sqflite.dart';
 abstract class DatabaseOpenHelper {
   static final String _tag = "DatabaseOpenHelper:";
 
-  static int _version;
-  static String _name;
-  static Database _database;
+  int version;
+  String name;
+  Database db;
 
-  int get databaseVersion => _version;
+  int get databaseVersion => version;
 
-  String get databaseName => _name;
+  String get databaseName => "$name.db";
 
   /// 构造函数
-  DatabaseOpenHelper(Database db, String dbName, int dbVersion) {
-    _version = dbVersion;
-    _name = "$dbName.db";
-    _database = db;
-    _init();
-  }
+  DatabaseOpenHelper(this.db, this.name, this.version);
 
   /// 创建
-  void onCreate(Database db, int version);
+  Future<void> onCreate(Database db, int version);
 
   /// 升级
-  void onUpgrade(Database db, int oldVersion, int newVersion);
+  Future<void> onUpgrade(Database db, int oldVersion, int newVersion);
+
+  /// 降级
+  Future<void> onDowngrade(Database db, int oldVersion, int newVersion);
 
   /// 初始化
-  _init() async {
+  Future<Database> init() async {
     // 获得数据库路径
     var databasesPath = await getDatabasesPath();
     // 拼接路径
-    String path = join(databasesPath, _name);
-    Logs.v("$path", tag: _tag);
+    String path = join(databasesPath, databaseName);
+    Logs.v("Path: $path", tag: _tag);
     // 打开数据库
-    _database = await openDatabase(path, version: _version);
-    // onCreate
-    onCreate(_database, _version);
+    try {
+      db = await openDatabase(
+        path,
+        version: version,
+        singleInstance: false,
+        onCreate: onCreate,
+        onUpgrade: onUpgrade,
+        onDowngrade: onDowngrade,
+      );
+      onCreate(db, version);
+      int oldVersion = await db.getVersion();
+      onUpgrade(db, oldVersion, oldVersion++);
+      onDowngrade(db, oldVersion, oldVersion--);
+    } catch (e) {
+      print("Error $e");
+    }
+    return db;
   }
 
   /// 关闭
-  static close() async {
-    await _database?.close();
-    _database = null;
+  void close() async {
+    await db?.close();
+    db = null;
   }
 
-// //insert
-// insert(Map map) async {
-//   //var values = {'name':'my_name','type':'my_type'};
-//   await _database.insert(tableName, map);
-// }
-//
-// //query
-// query(List list) async {
-//   //var myColumns = ['name', 'type'];
-//   var result = await _database.query(tableName, columns: list);
-//   for (var x in result) {
-//     print(x.keys);
-//     print(x.values);
-//   }
-// }
-//
-// //delete
-// delete(List list) async {
-//   var myWhere = 'name = ?';
-//   //var myArgs = ['cat'];
-//   await _database.delete(tableName, where: myWhere, whereArgs: list);
-// }
-//
-// //update
-// update(Map map) async {
-//   //var values = {'name':'my_name','type':'my_type'};
-//   await _database.update(tableName, map);
-// }
+  /// 获取数据库中所有的表
+  Future<List> getTables(Database db) async {
+    if (db == null) {
+      return Future.value([]);
+    }
+    List tables = await db
+        .rawQuery("select name from sqlite_master where type = 'table'");
+    List<String> targetList = [];
+    tables.forEach((item) {
+      targetList.add(item['name']);
+    });
+    return targetList;
+  }
 
+  /// 表是否存在
+  Future<bool> isTableExists(Database db, String table) async {
+    String sql =
+        "select * from sqlite_master where type='table' and name= '$table'";
+    var result = await db.rawQuery(sql);
+    return result != null && result.length > 0;
+  }
 }

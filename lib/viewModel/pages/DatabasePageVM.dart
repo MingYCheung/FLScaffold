@@ -8,14 +8,14 @@ import 'package:path_provider/path_provider.dart';
 ///
 /// @Author MingYCheung
 ///
-/// @Website: https://mingycheung.tech
+/// @Website: https://www.mingycheung.tech
 ///
 /// @Email: mingycheung@tom.com
 ///
-/// @Creation: 2021/1/2 22:26
+/// @Creation: 2021/1/3 22:26
 ///
 /// @Description:
 
 class DatabasePageVM {
-
+  static final _tag = "DatabasePageVM:";
 }
